@@ -24,6 +24,12 @@ button.click(() => addItem(event))
 
 $('main').on('click', '.checkbox', (event) => updatePacked(event))
 
+$('main').on('click', '.killme', (event) => deleteCard(event))
+
+const deleteCard = (event) => {
+  $(this.event.target).closest('article.card').remove();
+}
+
 const updatePacked = (event) => {
   const { value } = event.target;
   if (event.target.hasAttribute('checked')) {
