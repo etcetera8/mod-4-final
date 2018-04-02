@@ -54,6 +54,24 @@ app.delete('/api/v1/items/:id', (request, response) => {
   })
 })
 
+app.patch('/api/v1/items/:id', (request, response) => {
+  const { id } = request.params;
+  const packed = request.body;
+  console.log(packed)
+
+  database('list').where('id', request.params.id).update(packed)
+    .then( packed => {
+      if (packed) {
+        response.status(200).json({ id })
+      } else {
+        response.status(404).json({error: 'No item with that id'})
+      }
+    })
+    .catch( error => {
+      response.status(500).json({ error });
+    })
+})
+
 app.listen(app.get('port'), () => {
   console.log(`Server is running on ${app.get('port')}`)
 })
