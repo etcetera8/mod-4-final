@@ -31,9 +31,9 @@ app.post('/api/v1/items', (request, response ) => {
     }
   }
 
-  database('list').insert(item, 'list')
+  database('list').insert(item, 'id')
     .then( list => {
-      response.status(201).json( list );
+      response.status(201).json( {id: list[0]} );
     })
     .catch( error => {
       response.status(500).json({ error });

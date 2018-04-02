@@ -55,6 +55,31 @@ describe('API Routes', () => {
     })
   })
 
+  describe('POST /api/v1/items/', () => {
+    it('should create a new item', () => {
+      return chai.request(server)
+      .post('/api/v1/items')
+      .send({
+        item: "return ticket"
+      })
+      .then( response => {
+        response.status.should.equal(201)
+        response.body.should.be.a('object')
+        response.body.should.have.property('id')
+        response.body.id.should.equal(3)
+      })
+    })
+
+    it('should return a 422 error if no param is givern ', () => {
+      return chai.request(server)
+      .post('/api/v1/items')
+      .then( response => {
+        response.status.should.equal(422)
+        response.body.should.have.property('error')
+      })
+    })
+  })
+
   describe('PATCH /api/v1/items/:id', () => {
     it('should update whether an item is packed', () => {
       return chai.request(server)
