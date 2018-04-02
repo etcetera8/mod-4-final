@@ -2,7 +2,7 @@ const express = require('express');
 const app = express();
 const bodyParser = require('body-parser');
 
-const environment = process.env.NODE_ENV || 'development';
+const environment = process.env.NODE_ENV || 'test';
 const configuration = require('./knexfile')[environment];
 const database = require('knex')(configuration);
 
@@ -57,7 +57,6 @@ app.delete('/api/v1/items/:id', (request, response) => {
 app.patch('/api/v1/items/:id', (request, response) => {
   const { id } = request.params;
   const packed = request.body;
-  console.log(packed)
 
   database('list').where('id', request.params.id).update(packed)
     .then( packed => {
@@ -75,3 +74,5 @@ app.patch('/api/v1/items/:id', (request, response) => {
 app.listen(app.get('port'), () => {
   console.log(`Server is running on ${app.get('port')}`)
 })
+
+module.exports = app;
