@@ -21,6 +21,25 @@ app.get('/api/v1/items', (request, response) => {
     })
 })
 
+app.post('/api/v1/items', (request, response ) => {
+  const item = request.body;
+
+  for (let requiredParam of ['item']) {
+    if (!item[requiredParam]) {
+      return response.status(422)
+        .send(({error: `Expected format: {item: <String>}. You're missing a ${requiredParam} property.`}));
+    }
+  }
+
+  database('list').insert(item, 'id')
+    .then( item => {
+      response.status(201).json({ id: item[0]});
+    })
+    .catch( error => {
+      response.status(500).json({ error });
+    })
+})
+
 app.listen(app.get('port'), () => {
   console.log(`Server is running on ${app.get('port')}`)
 })
