@@ -2,11 +2,17 @@ const itemInput = $('.item-input');
 const button = $('.submit-btn');
 
 $(document).ready(() => loadList())
+button.click(() => addItem(event))
+$('main').on('click', '.checkbox', (event) => updatePacked(event))
+$('main').on('click', '.killme', (event) => deleteCard(event))
 
 const loadList = async() => {
   const response = await fetch('/api/v1/items')
   const items = await response.json();
+  makeTemplate(items)
+}
 
+const makeTemplate = (items) => {
   items.forEach(item => {
     let checked = item.packed ?
       `<span><input class="checkbox "type="checkbox" value="${item.id}" checked> <label>packed</label></span>` :
@@ -20,12 +26,6 @@ const loadList = async() => {
     $('main').prepend(template)
   })
 }
-
-button.click(() => addItem(event))
-
-$('main').on('click', '.checkbox', (event) => updatePacked(event))
-
-$('main').on('click', '.killme', (event) => deleteCard(event))
 
 const deleteCard = (event) => {
   $(this.event.target).closest('article.card').remove();
@@ -72,7 +72,7 @@ const addItem = async (event) => {
     await postItem(item)
   }
   itemInput.val('')
-  $('main').empty()
+  location.reload();
   await loadList();
 }
 
