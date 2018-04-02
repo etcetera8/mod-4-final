@@ -5,7 +5,7 @@
   "main": "server.js",
   "scripts": {
     "test": "NODE_ENV=test mocha --exit",
-    "start": "node server.js"
+    "start": "nodemon server.js"
   },
   "repository": {
     "type": "git",
@@ -22,6 +22,7 @@
     "chai-http": "git+https://github.com/chaijs/chai-http.git#3ea4524"
   },
   "dependencies": {
+    "body-parser": "^1.18.2",
     "knex": "^0.14.4",
     "pg": "^7.4.1"
   }
