@@ -21,6 +21,39 @@ app.get('/api/v1/items', (request, response) => {
     })
 })
 
+app.post('/api/v1/items', (request, response ) => {
+  const item = request.body;
+
+  for (let requiredParam of ['item']) {
+    if (!item[requiredParam]) {
+      return response.status(422)
+        .send(({error: `Expected format: {item: <String>}. You're missing a ${requiredParam} property.`}));
+    }
+  }
+
+  database('list').insert(item, 'id')
+    .then( item => {
+      response.status(201).json( {item} );
+    })
+    .catch( error => {
+      response.status(500).json({ error });
+    })
+})
+
+app.delete('/api/v1/items/:id', (request, response) => {
+  database('list').where('id', request.params.id).del()
+  .then(item => {
+    if (item) {
+      response.status(202).json(item);
+    } else {
+      response.status(404).json({ error: "No list item matching that id"});
+    }
+  })
+  .catch(error => {
+    response.status(500).json({ error });
+  })
+})
+
 app.listen(app.get('port'), () => {
   console.log(`Server is running on ${app.get('port')}`)
 })
