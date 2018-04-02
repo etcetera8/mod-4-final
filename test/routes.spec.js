@@ -96,6 +96,16 @@ describe('API Routes', () => {
         throw error;
       })
     })
+    
+    it('should give an error if no item with that id exists', () => {
+      return chai.request(server)
+      .delete('/api/v1/items/200')
+      .then(response => {
+        response.should.have.status(404)
+        response.body.should.have.property('error');
+        response.body.error.should.equal('No list item matching that id');
+      })
+    })
+    
   })
-
 });
