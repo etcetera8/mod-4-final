@@ -6,7 +6,6 @@ $(document).ready( async () => {
   const items = await response.json();
 
   items.forEach( item => {
-    console.log(item);
     let checked =  item.packed ? 
       `<span><input class="checkbox "type="checkbox" value="${item.id}" checked> <label>packed</label></span>`:
       `<span><input class="checkbox "type="checkbox" value="${item.id}"> <label>packed</label></span>`
@@ -32,7 +31,19 @@ const updatePacked = (event) => {
   } else {
     event.target.setAttribute('checked', true)
   }
-  //fetch(`/api/v1/items/${value}`)
+
+  const checked = event.target.hasAttribute('checked')
+  console.log(checked);
+  fetch(`/api/v1/items/${value}`, {
+    method: 'PATCH',
+    headers: {
+      'Accept': 'application/json, text/plain',
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({
+      packed: checked
+    })
+  })
 }
 
 const deleteItem = (itemId) => {
