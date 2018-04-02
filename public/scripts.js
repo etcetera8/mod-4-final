@@ -2,10 +2,8 @@ const itemInput = $('.item-input');
 const button = $('.submit-btn');
 
 $(document).ready( async () => {
-  console.log('ready');
   const response = await fetch('/api/v1/items')
   const items = await response.json();
-  console.log(items);
 
   items.forEach( item => {
     let checked =  item.packed ? 
@@ -30,7 +28,29 @@ const addItem = (event) => {
   if (item === '') {
     console.log('No empty items')
   } else {
-    console.log(item)
+    postItem(item)
   }
   itemInput.val('')
+}
+
+const postItem = (item) => {
+  fetch('/api/v1/items', {
+    method: 'POST',
+    headers: {
+      'Accept': 'application/json, text/plain',
+      'Content-Type': 'application/json'    
+    },
+    body: JSON.stringify({
+      item
+    })
+  })
+  .then( response => {
+    return response.json()
+  })
+  .then ( results => {
+    console.log("these are the results", results)
+  })
+  .catch( error => {
+    console.log('request failed', error);
+  })
 }
