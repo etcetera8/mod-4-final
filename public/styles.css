@@ -1,5 +1,35 @@
+@import url('https://fonts.googleapis.com/css?family=Press+Start+2P');
+
+
 body, html {
   margin: 0;
   padding: 0;
+}
+
+header {
   text-align: center;
+  font-family: 'Press Start 2P', cursive;
+  color: red;
+}
+
+.card {
+  margin: 50px auto;
+  padding: 10px;
+  border: 2px solid red;
+  width: 50%;
+}
+
+h3 {
+  display: inline-block;
+  margin-right: auto;
+  margin-bottom: 15px;
+  margin-top: 0;
+}
+
+span {
+  display: block;
+}
+
+.killme {
+  float: right;
 }

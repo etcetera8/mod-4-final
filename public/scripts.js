@@ -8,9 +8,9 @@ $(document).ready( async () => {
   console.log(items);
 
   items.forEach( item => {
-    let checked=  item.packed ? 
-      `<input class="checkbox "type="checkbox" value="packed" checked>`:
-      `<input class="checkbox "type="checkbox" value="packed">`
+    let checked =  item.packed ? 
+      `<span><input class="checkbox "type="checkbox" value="packed" checked> <label>packed</label></span>`:
+      `<span><input class="checkbox "type="checkbox" value="packed"> <label>packed</label></span>`
     
     const template = `<article class="card">
                         <h3>${item.item}</h3>
