@@ -1,15 +1,17 @@
 const itemInput = $('.item-input');
 const button = $('.submit-btn');
 
-$(document).ready( async () => {
+$(document).ready(() => loadList())
+
+const loadList = async() => {
   const response = await fetch('/api/v1/items')
   const items = await response.json();
 
-  items.forEach( item => {
-    let checked =  item.packed ? 
-      `<span><input class="checkbox "type="checkbox" value="${item.id}" checked> <label>packed</label></span>`:
+  items.forEach(item => {
+    let checked = item.packed ?
+      `<span><input class="checkbox "type="checkbox" value="${item.id}" checked> <label>packed</label></span>` :
       `<span><input class="checkbox "type="checkbox" value="${item.id}"> <label>packed</label></span>`
-    
+
     const template = `<article class="card">
                         <h3>${item.item}</h3>
                         <button class="killme" value=${item.id} onClick=deleteItem(${item.id})>Delete</button>
@@ -17,8 +19,7 @@ $(document).ready( async () => {
                       </article>`
     $('main').prepend(template)
   })
-
-})
+}
 
 button.click(() => addItem(event))
 
@@ -39,7 +40,6 @@ const updatePacked = (event) => {
   }
 
   const checked = event.target.hasAttribute('checked')
-  console.log(checked);
   fetch(`/api/v1/items/${value}`, {
     method: 'PATCH',
     headers: {
@@ -63,15 +63,17 @@ const deleteItem = (itemId) => {
   })
 }
 
-const addItem = (event) => {
+const addItem = async (event) => {
   event.preventDefault();
   const item = itemInput.val();
   if (item === '') {
     console.log('No empty items')
   } else {
-    postItem(item)
+    await postItem(item)
   }
   itemInput.val('')
+  $('main').empty()
+  await loadList();
 }
 
 const postItem = (item) => {
@@ -89,7 +91,7 @@ const postItem = (item) => {
     return response.json()
   })
   .then ( results => {
-    console.log("these are the results", results.item[0])
+    console.log("these are the results", results)
   })
   .catch( error => {
     console.log('request failed', error);
